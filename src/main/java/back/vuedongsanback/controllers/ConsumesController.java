@@ -2,10 +2,7 @@ package back.vuedongsanback.controllers;
 
 import back.vuedongsanback.models.Consume;
 import back.vuedongsanback.models.Consumes;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.ArrayList;
@@ -25,7 +22,7 @@ public class ConsumesController {
         consumes.add(new Consume(5, 10));
         return new Consumes(5000, 1999, consumes);
     }
-    public static final Consumes cunsumes = init();
+    public static final Consumes consumes = init();
 
 //    @RequestMapping(path = "", method = RequestMethod.POST)
 //    public MembersResponse membersCreate(@RequestBody Member member) {
@@ -35,9 +32,17 @@ public class ConsumesController {
 
     @RequestMapping(path = "", method = RequestMethod.GET)
     // public MembersResponse membersRead(@ModelAttribute Member member) {
-    // public MembersResponse membersRead(@RequestParam("name") String title, @RequestParam(required=false, defaultValue="1") int age) {
-    public Consumes membersRead() {
-        return cunsumes;
+     public Consumes membersRead(@RequestParam(required=false) String query) {
+        System.out.println(query);
+        List<Consume> consumes = new ArrayList<>();
+
+        for (int i = 0; i < this.consumes.getConsumes().size(); i++) {
+            Consume consume = this.consumes.getConsumes().get(i);
+            if (query == null || "".equals(query) || consume.getPrice().toString().contains(query)) {
+                consumes.add(consume);
+            }
+        }
+        return new Consumes(5000, 1999, consumes);
     }
 //
 //    @RequestMapping(path = "/{index}", method = RequestMethod.DELETE)
